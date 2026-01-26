@@ -1,0 +1,6 @@
+net/nightzy/echestplus/EChestPlusPlugin.class
+net/nightzy/echestplus/EnderChestManager.class
+net/nightzy/echestplus/listeners/EnderChestListener.class
+net/nightzy/echestplus/listeners/UpgradeItemListener.class
+net/nightzy/echestplus/DatabaseYML.class
+net/nightzy/echestplus/commands/UpgradeCommand.class

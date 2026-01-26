@@ -2,13 +2,13 @@
 # EchestPlus plugin configuration
 # ============================================================
 
-name: '${project.name}'
-version: '${project.version}'
+name: 'EChestPlus'
+version: '0.1-Prerelease.3'
 main: net.nightzy.echestplus.EChestPlusPlugin
-api-version: '${apiVersion}'
+api-version: '1.21'
 authors:
   - Drago <drago.klaudiusz@gmail.com>
-website: '${project.url}'
+website: 'https://nightzy.net'
 description: "TBN"
 # ============================================================
 # Permissions

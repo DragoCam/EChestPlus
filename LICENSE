@@ -1,0 +1,75 @@
+ECHESTPLUS SOFTWARE LICENSE AGREEMENT
+Version 1.0 – 6 August 2025
+
+1. DEFINITIONS
+
+1.1 "License" means this legally binding agreement (Sections 1–9) between the copyright owner and the Licensee.
+
+1.2 "Software" means the copyrighted work licensed under this License, specifically the EchestPlus plugin and all associated components, including but not limited to:
+   a) Source Code – the human-readable version (code, configs, documentation etc.);
+   b) Executables – compiled, runnable binary;
+   c) Libraries – any modules included with this plugin;
+   d) Documentation – manuals, technical docs, readme files;
+   e) Assets – graphics, sounds, data files, or any non-code resources included with the Software.
+
+1.3 "Licensee" means any individual or legal entity using this Software.
+
+1.4 "Derivative Works" means any modified or adapted version of the Software.
+
+2. GRANT OF RIGHTS
+
+2.1 Subject to this License, the copyright owner Klaudiusz DragoCam Wojtyczka grants the Licensee a worldwide, non-exclusive, non-transferable, non-sublicensable license to use the Software.
+
+2.2 The Licensee may use the Software for any personal, commercial or academic purpose, only on devices owned or controlled by the Licensee.
+
+2.3 The Licensee may view the Source Code in order to understand functionality, identify issues, or develop interoperability. This does not grant the right to modify the Source Code for distribution, except as described in Section 4.
+
+3. RESTRICTIONS
+
+3.1 The Licensee may not distribute, sell, rent, lease, lend, sublicense, publish or otherwise make the Software available to any third party, whether free or paid, without written permission of the copyright owner.
+
+3.2 The Licensee may not modify, fork, translate, decompile, reverse engineer, or create Derivative Works based on the Software for the purpose of redistribution or public availability.
+
+3.3 Copies may only be made for the Licensee’s own use (e.g. backup). All copies must retain original copyright notices and proprietary legends.
+
+3.4 The Licensee must not remove or alter any copyright, trademark or ownership information within the Software or its documentation.
+
+4. CONTRIBUTIONS
+
+4.1 The Licensee may submit modifications only as contributions to the original Software project (maintained by the copyright owner). Such contributions must follow the contribution guidelines provided by the copyright owner.
+
+4.2 Any contributions made by the Licensee automatically transfer all intellectual property rights in the contribution to the copyright owner.
+
+4.3 The Licensee represents that they have the legal right to contribute such material and that the contribution does not infringe any third-party rights.
+
+5. FEES
+
+5.1 Some features of the Software may require payment of fees. The copyright owner may change the fee structure with reasonable notice.
+
+5.2 The Licensee must not attempt to bypass or disable any fee collection mechanisms.
+
+6. TERMINATION
+
+6.1 This License automatically terminates if the Licensee breaches any of its terms. Upon termination, the Licensee must immediately stop using the Software and delete all copies.
+
+6.2 The License also terminates if the Licensee voluntarily stops using the Software and deletes all copies.
+
+6.3 Sections 1, 7, 8 and 9 survive termination.
+
+7. DISCLAIMER OF WARRANTY
+
+The Software is provided “AS IS”, without warranty of any kind (express or implied). The Licensee uses the Software at their own risk.
+
+8. LIMITATION OF LIABILITY
+
+In no event shall the copyright owner be liable for any damages arising from use or inability to use the Software, even if notified of the possibility of such damages. Maximum liability shall not exceed the price paid (if any).
+
+9. MISCELLANEOUS
+
+9.1 This License contains the entire agreement between the parties and supersedes prior agreements.
+
+9.2 The Licensee may not transfer or assign any rights under this License without written consent from the copyright owner.
+
+---
+
+By using the Software, the Licensee acknowledges that they have read, understood, and agree to be bound by these terms.

@@ -1,51 +1,40 @@
 package net.nightzy.echestplus;
 
+import net.nightzy.echestplus.commands.UpgradeCommand;
+import net.nightzy.echestplus.listeners.EnderChestListener;
+import net.nightzy.echestplus.listeners.UpgradeItemListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.logging.Level;
 
-import net.nightzy.echestplus.managers.LangManager;
-import net.nightzy.echestplus.controllers.LangController;
-import net.nightzy.echestplus.commands.EcReloadCommand;
+public class EChestPlusPlugin extends JavaPlugin {
 
-public final class EChestPlusPlugin extends JavaPlugin {
-
-    private static EChestPlusPlugin main;
-    private LangManager langManager;
+    private DatabaseYML database;
+    private EnderChestManager enderChestManager;
 
     @Override
     public void onEnable() {
-        main = this;
-        this.loadPlugin();
-        saveDefaultConfig();
+        try {
+            if (!getDataFolder().exists()) getDataFolder().mkdirs();
 
-        langManager = new LangManager(this);
-        langManager.createLangFolder();
-        langManager.loadLangConfig();
+            database = new DatabaseYML(getDataFolder());
+            enderChestManager = new EnderChestManager(database);
 
-        getCommand("ecreload").setExecutor(new net.nightzy.echestplus.commands.EcReloadCommand(this));
-    }
+            getServer().getPluginManager().registerEvents(
+                    new EnderChestListener(enderChestManager), this
+            );
+            
+            getServer().getPluginManager().registerEvents(
+                    new UpgradeItemListener(enderChestManager), this
+            );
 
-    private void loadPlugin() {
-        if (!main.getDescription().getAuthors().contains("Nightzy.net")) {
-            getLogger().log(Level.WARNING, "Plugin disabled due to an error in the plugin.yml section");
-            main.getPluginLoader().disablePlugin(this);
+            getCommand("giveupgrade")
+                    .setExecutor(new UpgradeCommand());
+
+            getLogger().info("EChestPlus enabled.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            getServer().getPluginManager().disablePlugin(this);
         }
-
-        getLogger().log(Level.INFO, "EChestPlus has been enabled!");
-    }
-
-    @Override
-    public void onDisable() {
-        getLogger().info("EChestPlus has been disabled!");
-    }
-
-    public static EChestPlusPlugin getMain() {
-        return main;
-    }
-
-    public LangManager getLangManager() {
-        return langManager;
     }
 }

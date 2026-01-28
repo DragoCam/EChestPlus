@@ -2,25 +2,33 @@
 # EchestPlus plugin configuration
 # ============================================================
 
-name: 'EChestPlus'
-version: '0.1-Prerelease.3'
+name: 'EchestPlus'
+version: '26.1-Beta.1'
 main: net.nightzy.echestplus.EChestPlusPlugin
-api-version: '1.21'
+api-version: '1.15'
 authors:
-  - Drago <drago.klaudiusz@gmail.com>
+  - Drago <klaudiusz.wojtyczka@nightzy.net>
+  - AVI
 website: 'https://nightzy.net'
 description: "TBN"
 # ============================================================
 # Permissions
 # ============================================================
-
-
+permissions:
+  nightzy.echestplus.admin:
+    description: Allows access to /adminec command
+    default: op
 
 # ============================================================
 # Commands
 # ============================================================
 
 commands:
-  giveupgrade:
-    description: Gives Ender Chest upgrade item
-    usage: /giveupgrade
+
+  adminec:
+    description: Admin commands for Ender Chest
+    aliases:
+      - aec
+      - adminenderchest
+    usage: /adminec <getItem|open|reload>
+    permission: echestplus.admin

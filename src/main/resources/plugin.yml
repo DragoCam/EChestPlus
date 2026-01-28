@@ -7,20 +7,28 @@ version: '${project.version}'
 main: net.nightzy.echestplus.EChestPlusPlugin
 api-version: '${apiVersion}'
 authors:
-  - Drago <drago.klaudiusz@gmail.com>
+  - Drago <klaudiusz.wojtyczka@nightzy.net>
+  - AVI
 website: '${project.url}'
 description: "TBN"
 # ============================================================
 # Permissions
 # ============================================================
-
-
+permissions:
+  nightzy.echestplus.admin:
+    description: Allows access to /adminec command
+    default: op
 
 # ============================================================
 # Commands
 # ============================================================
 
 commands:
-  giveupgrade:
-    description: Gives Ender Chest upgrade item
-    usage: /giveupgrade
+
+  adminec:
+    description: Admin commands for Ender Chest
+    aliases:
+      - aec
+      - adminenderchest
+    usage: /adminec <getItem|open|reload>
+    permission: echestplus.admin

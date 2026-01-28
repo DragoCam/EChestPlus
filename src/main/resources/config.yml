@@ -1,0 +1,80 @@
+# ============================================================
+# EChestPlus plugin configuration
+# ============================================================
+
+# Permission for admin to use /adminenderchest -> nightzy.echestplus.admin
+
+# Database type
+# MYSQL   -> Relational database storing data in tables
+# SQLITE  -> Local relational database in a single file
+# MONGODB -> JSON document storage
+baseType: SQLITE
+
+# Full database connection URI
+# MYSQL   -> Example: jdbc:mysql://<user>:<password>@<address>:<port>/<database_name>
+# MONGODB -> Example: mongodb+srv://<db_username>:<db_password>@<address>/?retryWrites=true&w=majority&appName=<cluster>
+# SQLITE  -> Example: jdbc:sqlite:plugins/EChestPlus/enderchests.db
+databaseConnectionUri: jdbc:sqlite:plugins/EChestPlus/enderchests.db
+
+# Migrate current enderchests for players?
+# Set to true to enable migration
+# Migration copies the chests when player joins the server
+# WARNING! Old enderchest items will be removed after migration!
+migrateStatus: false
+
+# Enderchest GUI name
+enderChestName: "<gradient:#086BFB:#4385FF>Your EnderChest</gradient>"
+
+# Default enderchest size
+enderChestSize: 27
+
+# Upgrader item configuration
+upgraderItem:
+  - itemStack:
+      material: PAPER
+      meta:
+        display: '&5&lEnderChest Upgrade'
+        lore:
+          - ' &8» &7Allows you to expand your enderchest'
+          - ' &8» &5by 9 additional slots&7!'
+          - ''
+          - ' &8» &cWarning! &7Maximum additional'
+          - ' &8» &flines: 3'
+          - ''
+        enchantments:
+          LURE: 1
+        flags:
+          - HIDE_ENCHANTS
+    modelData: 1
+
+# Messages
+fullEnderChest:
+  messageType: CHAT
+  message: "<red>You already have the maximum enderchest upgrade!<dark_red>"
+
+upgraded:
+  messageType: TITLE_SUBTITLE
+  message: "<b><gradient:#086BFB:#4385FF>EnderChest</gradient></b>\n<white>Upgraded enderchest to <#4385FF><size> slots</#4385FF>"
+
+cooldown:
+  messageType: CHAT
+  message: "<red>You cannot open the enderchest so quickly!<dark_red>"
+
+# Admin command messages
+adminMessages:
+  noPermission: "<red>You don't have permission: fastcode.enderchest.admin"
+  playerNotOnline: "<red>Player <#FF6B6B><player></#FF6B6B> is not online!"
+  itemGiven: "<green>Given upgrade to <#4385FF><player></#4385FF>"
+  targetItemGiven: "<green>You received an EnderChest upgrade from an admin!"
+  opened: "<green>Opened enderchest of <#4385FF><player></#4385FF>"
+  sizeChanged: "<green>Changed size of <#4385FF><player></#4385FF>'s enderchest to <#4385FF><size></#4385FF> slots (<#FFD700><lines></#FFD700> lines)"
+  invalidLines: "<red>Lines must be between 1 and 6!"
+  invalidNumber: "<red>Invalid number!"
+  reloaded: "<green>Plugin reloaded successfully!"
+  reloadError: "<red>Error during reload: <#FF6B6B><error></#FF6B6B>"
+  usage: "<yellow>Usage: <#4385FF>/adminec <getItem|open|size|reload>"
+  helpTitle: "<b><gradient:#086BFB:#4385FF>=== Admin EnderChest ===</gradient></b>"
+  helpGetItem: "<#4385FF>/adminec getItem <player></#4385FF> <gray>- Give upgrade to player"
+  helpOpen: "<#4385FF>/adminec open <player></#4385FF> <gray>- Open player's enderchest"
+  helpSize: "<#4385FF>/adminec size <player> <lines></#4385FF> <gray>- Change enderchest size (1-6)"
+  helpReload: "<#4385FF>/adminec reload</#4385FF> <gray>- Reload plugin"

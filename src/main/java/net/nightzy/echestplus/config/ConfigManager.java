@@ -1,65 +1,50 @@
 package net.nightzy.echestplus.config;
 
+import dev.lone.itemsadder.api.CustomStack;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.title.Title;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Manages plugin configuration access.
- * Handles database settings, messages and item definitions.
+ * Handles database settings, messages, item definitions, and visual effects.
  */
 public class ConfigManager {
 
-    // ============================================================
-    // Fields
-    // ============================================================
-
-    private final JavaPlugin plugin; // Plugin instance for config access
-
-    // ============================================================
-    // Constructor
-    // ============================================================
+    private final JavaPlugin plugin;
 
     public ConfigManager(JavaPlugin plugin) {
         this.plugin = plugin;
         this.plugin.saveDefaultConfig();
     }
 
-    // ============================================================
-    // Database & General Settings
-    // ============================================================
+    public boolean isUseItemsAdder() {
+        return plugin.getConfig().getBoolean("useItemsAdder", false);
+    }
 
     public String getBaseType() {
-        return plugin.getConfig().getString("baseType", "SQLITE");
+        return plugin.getConfig().getString("baseType", "YML");
     }
 
     public String getDatabaseConnectionUri() {
-        return plugin.getConfig().getString("databaseConnectionUri", "");
+        return plugin.getConfig().getString("databaseConnectionUri");
     }
 
-    public boolean getMigrateStatus() {
-        return plugin.getConfig().getBoolean("migrateStatus", false);
-    }
-
-    // ============================================================
-    // Ender Chest Settings
-    // ============================================================
-
-    /**
-     * Returns the display name of the ender chest.
-     */
     public Component getEnderChestName() {
-        String raw = plugin.getConfig().getString("enderChestName", "Ender Chest");
+        String raw = plugin.getConfig().getString("enderChestName", "<gradient:#086BFB:#4385FF>Your EnderChest</gradient>");
         return MiniMessage.miniMessage().deserialize(raw);
     }
 
@@ -67,25 +52,14 @@ public class ConfigManager {
         return plugin.getConfig().getInt("enderChestSize", 27);
     }
 
-    public int getOpenCooldown() {
-        return plugin.getConfig().getInt("openCooldown", 3);
-    }
-
-    // ============================================================
-    // Upgrader Item
-    // ============================================================
-
-    /**
-     * Builds the upgrader item from config definition.
-     * Returns null if configuration is invalid or missing.
-     */
     @SuppressWarnings("unchecked")
     public ItemStack getUpgraderItem() {
-
-        // Validate base structure
         if (!plugin.getConfig().isList("upgraderItem")) return null;
 
-        Object first = plugin.getConfig().getList("upgraderItem").get(0);
+        List<?> list = plugin.getConfig().getList("upgraderItem");
+        if (list == null || list.isEmpty()) return null;
+
+        Object first = list.get(0);
         if (!(first instanceof Map)) return null;
 
         Map<String, Object> entry = (Map<String, Object>) first;
@@ -93,68 +67,67 @@ public class ConfigManager {
         int modelData = entry.containsKey("modelData") ? (int) entry.get("modelData") : 0;
 
         if (!(itemStackObj instanceof Map)) return null;
-
-        // Resolve material
         Map<String, Object> itemStackMap = (Map<String, Object>) itemStackObj;
-        String materialName = (String) itemStackMap.getOrDefault("material", "PAPER");
-        Material mat = Material.matchMaterial(materialName);
-        if (mat == null) mat = Material.PAPER;
 
-        ItemStack item = new ItemStack(mat);
+        ItemStack item;
+
+        if (isUseItemsAdder()) {
+            CustomStack cs = CustomStack.getInstance("echestplus:upgrader");
+            if (cs != null) {
+                item = cs.getItemStack();
+            } else {
+                String materialName = (String) itemStackMap.getOrDefault("material", "NETHER_STAR");
+                item = new ItemStack(Material.valueOf(materialName));
+            }
+        } else {
+            String materialName = (String) itemStackMap.getOrDefault("material", "NETHER_STAR");
+            Material mat = Material.matchMaterial(materialName);
+            item = new ItemStack(mat != null ? mat : Material.NETHER_STAR);
+        }
+
         ItemMeta meta = item.getItemMeta();
-
         if (meta != null) {
-
             Object metaObj = itemStackMap.get("meta");
             if (metaObj instanceof Map) {
                 Map<String, Object> metaMap = (Map<String, Object>) metaObj;
 
-                // Display name
                 String display = (String) metaMap.get("display");
                 if (display != null) {
                     meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', display));
                 }
 
-                // Lore
                 Object loreObj = metaMap.get("lore");
                 if (loreObj instanceof List) {
-                    List<String> lore = new ArrayList<>();
-                    for (Object l : (List<?>) loreObj) {
-                        lore.add(ChatColor.translateAlternateColorCodes('&', String.valueOf(l)));
+                    List<String> loreLines = new ArrayList<>();
+                    for (Object line : (List<?>) loreObj) {
+                        loreLines.add(ChatColor.translateAlternateColorCodes('&', String.valueOf(line)));
                     }
-                    meta.setLore(lore);
+                    meta.setLore(loreLines);
                 }
 
-                // Enchantments
                 Object enchObj = metaMap.get("enchantments");
                 if (enchObj instanceof Map) {
                     Map<String, Object> enchMap = (Map<String, Object>) enchObj;
                     for (Map.Entry<String, Object> e : enchMap.entrySet()) {
-                        String enchName = e.getKey();
-                        int lvl = Integer.parseInt(String.valueOf(e.getValue()));
-                        Enchantment enchant = Enchantment.getByName(enchName);
+                        Enchantment enchant = Enchantment.getByName(e.getKey().toUpperCase());
                         if (enchant != null) {
+                            int lvl = Integer.parseInt(String.valueOf(e.getValue()));
                             meta.addEnchant(enchant, lvl, true);
                         }
                     }
                 }
 
-                // Item flags
                 Object flagsObj = metaMap.get("flags");
                 if (flagsObj instanceof List) {
                     for (Object f : (List<?>) flagsObj) {
                         try {
-                            ItemFlag flag = ItemFlag.valueOf(String.valueOf(f));
-                            meta.addItemFlags(flag);
-                        } catch (Exception ignored) {
-                            // Ignore invalid flags
-                        }
+                            meta.addItemFlags(ItemFlag.valueOf(String.valueOf(f).toUpperCase()));
+                        } catch (Exception ignored) {}
                     }
                 }
             }
 
-            // Custom model data
-            if (modelData > 0) {
+            if (!isUseItemsAdder() && modelData > 0) {
                 meta.setCustomModelData(modelData);
             }
 
@@ -164,83 +137,54 @@ public class ConfigManager {
         return item;
     }
 
-    // ============================================================
-    // Message Utilities
-    // ============================================================
+    public void sendMessage(Player player, String sectionPath, Map<String, String> placeholders) {
+        String rawMessage = plugin.getConfig().getString(sectionPath + ".message", "Message not found");
+        String type = getMessageType(sectionPath);
 
-    /**
-     * Returns a configured message as a Component.
-     */
-    public Component getMessageAsComponent(String path, String placeholder, String value) {
-
-        String raw = plugin.getConfig().getString(path, "Message not found");
-
-        if (placeholder != null && value != null) {
-            raw = raw.replace("<" + placeholder + ">", value);
+        if (placeholders != null) {
+            for (Map.Entry<String, String> e : placeholders.entrySet()) {
+                rawMessage = rawMessage.replace("<" + e.getKey() + ">", e.getValue());
+            }
         }
 
-        return MiniMessage.miniMessage().deserialize(raw);
+        MiniMessage mm = MiniMessage.miniMessage();
+
+        switch (type.toUpperCase()) {
+            case "TITLE_SUBTITLE":
+                String[] split = rawMessage.split("\n", 2);
+                Component title = mm.deserialize(split[0]);
+                Component subtitle = (split.length > 1) ? mm.deserialize(split[1]) : Component.empty();
+                player.showTitle(Title.title(title, subtitle));
+                break;
+            case "ACTIONBAR":
+                player.sendActionBar(mm.deserialize(rawMessage));
+                break;
+            case "CHAT":
+            default:
+                player.sendMessage(mm.deserialize(rawMessage));
+                break;
+        }
     }
 
-    /**
-     * Returns the message delivery type for a message section.
-     */
     public String getMessageType(String sectionPath) {
         return plugin.getConfig().getString(sectionPath + ".messageType", "CHAT");
     }
 
-    /**
-     * Sends a configured message to the player.
-     * Supports CHAT, ACTION_BAR and TITLE_SUBTITLE.
-     */
-    public void sendMessage(org.bukkit.entity.Player player,
-                            String sectionPath,
-                            String placeholder,
-                            String value) {
-
-        String messageType = getMessageType(sectionPath);
-        String rawMessage = plugin.getConfig().getString(sectionPath + ".message", "");
-
-        if (placeholder != null && value != null) {
-            rawMessage = rawMessage.replace("<" + placeholder + ">", value);
+    public Component getMessageAsComponent(String path, Map<String, String> placeholders) {
+        String raw = plugin.getConfig().getString(path, "Message not found");
+        if (placeholders != null) {
+            for (Map.Entry<String, String> e : placeholders.entrySet()) {
+                raw = raw.replace("<" + e.getKey() + ">", e.getValue());
+            }
         }
-
-        switch (messageType.toUpperCase()) {
-
-            case "TITLE_SUBTITLE":
-                String[] parts = rawMessage.split("\\\\n", 2);
-                Component title = MiniMessage.miniMessage()
-                        .deserialize(parts.length > 0 ? parts[0] : "");
-                Component subtitle = MiniMessage.miniMessage()
-                        .deserialize(parts.length > 1 ? parts[1] : "");
-                player.showTitle(net.kyori.adventure.title.Title.title(title, subtitle));
-                break;
-
-            case "ACTION_BAR":
-                Component actionBar = MiniMessage.miniMessage().deserialize(rawMessage);
-                player.sendActionBar(actionBar);
-                break;
-
-            case "CHAT":
-            default:
-                Component chat = MiniMessage.miniMessage().deserialize(rawMessage);
-                player.sendMessage(chat);
-                break;
-        }
+        return MiniMessage.miniMessage().deserialize(raw);
     }
 
-    /**
-     * Returns an admin message as a Component.
-     */
     public Component getAdminMessage(String messagePath, String placeholder, String value) {
-
-        String raw = plugin.getConfig()
-                .getString("adminMessages." + messagePath, "Message not found");
-
+        String raw = plugin.getConfig().getString("adminMessages." + messagePath, "Message not found");
         if (placeholder != null && value != null) {
             raw = raw.replace("<" + placeholder + ">", value);
         }
-
         return MiniMessage.miniMessage().deserialize(raw);
     }
 }

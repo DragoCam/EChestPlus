@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Provides tab completion for the EchestPlus admin command.
- * Suggests subcommands, player names and size values.
+ * Suggests subcommands, player names, and size values.
  */
 public class AdminCommandTabCompleter implements TabCompleter {
 
@@ -24,7 +24,7 @@ public class AdminCommandTabCompleter implements TabCompleter {
             Arrays.asList("getItem", "open", "size", "reload"); // Available admin subcommands
 
     private static final List<String> LINES =
-            Arrays.asList("3", "4", "5", "6"); // Valid line counts for size command
+            Arrays.asList("3", "4", "5", "6"); // Valid line counts for the size command
 
     // ============================================================
     // Tab Completion Logic
@@ -43,8 +43,12 @@ public class AdminCommandTabCompleter implements TabCompleter {
             return getMatches(args[0], SUBCOMMANDS);
         }
 
-        // Second argument -> online player names
-        if (args.length == 2) {
+        // Second argument -> online player names for getItem, open, and size
+        if (args.length == 2 &&
+                (args[0].equalsIgnoreCase("getItem") ||
+                 args[0].equalsIgnoreCase("open") ||
+                 args[0].equalsIgnoreCase("size"))) {
+
             List<String> players = new ArrayList<>();
             for (Player p : Bukkit.getOnlinePlayers()) {
                 players.add(p.getName());
@@ -65,7 +69,11 @@ public class AdminCommandTabCompleter implements TabCompleter {
     // ============================================================
 
     /**
-     * Filters available options based on the current input.
+     * Filters available options based on current input
+     *
+     * @param input   The current user input
+     * @param options The list of possible options
+     * @return Filtered list of matching options
      */
     private List<String> getMatches(String input, List<String> options) {
 

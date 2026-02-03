@@ -3,14 +3,16 @@
 # ============================================================
 
 name: 'EchestPlus'
-version: '26.1-Beta.1'
+version: '26.1'
 main: net.nightzy.echestplus.EChestPlusPlugin
 api-version: '1.15'
-authors:
-  - Drago <klaudiusz.wojtyczka@nightzy.net>
-  - AVI
+authors: 
+  - 'Drago <klaudiusz.wojtyczka@nightzy.net>'
+  - 'AVI'
 website: 'https://nightzy.net'
-description: "TBN"
+description: "EChestPlus - Supercharged Ender Chest Plugin"
+softdepend:
+  - ItemsAdder
 # ============================================================
 # Permissions
 # ============================================================

@@ -9,7 +9,7 @@
          ============================================================ -->
     <groupId>net.nightzy</groupId>
     <artifactId>echestplus</artifactId>
-    <version>26.1-Beta.1</version>
+    <version>26.1</version>
     <name>EchestPlus</name>
 
     <!-- ============================================================
@@ -20,10 +20,6 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <maven.build.timestamp.format>yyyy-MM-dd HH.mm</maven.build.timestamp.format>
-        <authors>
-            [Drago &lt;klaudiusz.wojtyczka@nightzy.net&gt;]
-            [AVI]
-        </authors>
         <project.url>https://nightzy.net</project.url>
         <apiVersion>1.15</apiVersion>
     </properties>
@@ -81,8 +77,11 @@
             <id>papermc</id>
             <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
-
     <!-- ============================================================
          Dependencies
          ============================================================ -->
@@ -111,6 +110,13 @@
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-sync</artifactId>
             <version>4.11.2</version>
+        </dependency>
+        <!-- ItemsAdder API -->
+        <dependency>
+            <groupId>com.github.LoneDev6</groupId>
+            <artifactId>api-itemsadder</artifactId>
+            <version>3.6.2-beta-r3-b</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

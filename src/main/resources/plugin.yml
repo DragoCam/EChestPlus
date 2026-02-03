@@ -6,11 +6,13 @@ name: '${project.name}'
 version: '${project.version}'
 main: net.nightzy.echestplus.EChestPlusPlugin
 api-version: '${apiVersion}'
-authors:
-  - Drago <klaudiusz.wojtyczka@nightzy.net>
-  - AVI
+authors: 
+  - 'Drago <klaudiusz.wojtyczka@nightzy.net>'
+  - 'AVI'
 website: '${project.url}'
-description: "TBN"
+description: "EChestPlus - Supercharged Ender Chest Plugin"
+softdepend:
+  - ItemsAdder
 # ============================================================
 # Permissions
 # ============================================================

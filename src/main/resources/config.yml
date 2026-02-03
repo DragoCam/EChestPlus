@@ -28,10 +28,14 @@ enderChestName: "<gradient:#086BFB:#4385FF>Your EnderChest</gradient>"
 # Default enderchest size
 enderChestSize: 27
 
+# ItemsAdder integration
+# Set to true if you want to use ItemsAdder for custom upgrader item
+useItemsAdder: false
+
 # Upgrader item configuration
 upgraderItem:
   - itemStack:
-      material: PAPER
+      material: NETHER_STAR
       meta:
         display: '&5&lEnderChest Upgrade'
         lore:
@@ -68,7 +72,7 @@ adminMessages:
   targetItemGiven: "<green>You received an EnderChest upgrade from an admin!"
   opened: "<green>Opened enderchest of <#4385FF><player></#4385FF>"
   sizeChanged: "<green>Changed size of <#4385FF><player></#4385FF>'s enderchest to <#4385FF><size></#4385FF> slots (<#FFD700><lines></#FFD700> lines)"
-  invalidLines: "<red>Lines must be between 1 and 6!"
+  invalidLines: "<red>Lines must be between 3 and 6!"
   invalidNumber: "<red>Invalid number!"
   reloaded: "<green>Plugin reloaded successfully!"
   reloadError: "<red>Error during reload: <#FF6B6B><error></#FF6B6B>"
@@ -76,5 +80,5 @@ adminMessages:
   helpTitle: "<b><gradient:#086BFB:#4385FF>=== Admin EnderChest ===</gradient></b>"
   helpGetItem: "<#4385FF>/adminec getItem <player></#4385FF> <gray>- Give upgrade to player"
   helpOpen: "<#4385FF>/adminec open <player></#4385FF> <gray>- Open player's enderchest"
-  helpSize: "<#4385FF>/adminec size <player> <lines></#4385FF> <gray>- Change enderchest size (1-6)"
+  helpSize: "<#4385FF>/adminec size <player> <lines></#4385FF> <gray>- Change enderchest size (3-6)"
   helpReload: "<#4385FF>/adminec reload</#4385FF> <gray>- Reload plugin"
